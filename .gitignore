@@ -1,0 +1,10 @@
+# OS / editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.vscode/
+
+# Local logs and archives
+*.zip
+WoWCombatLog*.txt
