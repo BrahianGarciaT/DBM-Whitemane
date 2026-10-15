@@ -96,7 +96,7 @@ function mod:OnCombatStart(delay)
 	self:SetStage(1)
 	enrageTimer:Start(-delay)
 	timerAchieve:Start(-delay)
-	if self:IsHeroic() then -- Whitemane heroic: first Vortex at ~32s, Arcane Breath at ~9s, Arcane Feedback at ~16s
+	if self:IsDifficulty("heroic10") then -- Whitemane heroic 10 (logs only from 10 HC): first Vortex at ~32s, Arcane Breath at ~9s, Arcane Feedback at ~16s
 		nextVortex = GetTime()+31-delay
 		timerVortexCD:Start(32-delay)
 		timerArcaneFeedbackCD:Start(16-delay)
@@ -121,7 +121,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif args:IsSpellID(60936, 57407) then
-		DBM:Debug("SURGE" .. guids[args.destGUID], 2)
+		DBM:Debug("SURGE" .. tostring(guids[args.destGUID]), 2)
 		local target = guids[args.destGUID or 0]
 		if target then
 			warnSurge:CombinedShow(0.5, target)
@@ -149,7 +149,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnBreath:Show()
 		specWarnBreath:Play("findshield")
 		timerBreath:Start()
-		timerBreathCD:Start(self:IsHeroic() and 72 or nil)--Whitemane heroic: 72s between Surges of Power
+		timerBreathCD:Start(self:IsDifficulty("heroic10") and 72 or nil)--Whitemane heroic: 72s between Surges of Power
 	elseif args.spellId == 9250851 then -- Arcane Breath (Whitemane heroic): first at ~9s, then ~58s later, then clusters of casts ~13.5s apart
 		local now = GetTime()
 		if not lastArcaneBreath then
@@ -175,12 +175,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args.spellId == 9250865 then -- Arcane Feedback (Whitemane heroic debuff on a player)
 		warnArcaneFeedback:Show(args.destName or "unknown")
 	elseif args.spellId == 56105 then -- Vortex cast seen in the combat log (Whitemane heroic: every ~78s, Arcane Feedback ~47s after it)
-		if self:IsHeroic() then
+		if self:IsDifficulty("heroic10") then
 			timerVortexCD:Start(78)
 			timerArcaneFeedbackCD:Start(47)
 		end
 	elseif args.spellId == 56397 then -- Scion of Eternity Arcane Barrage: first one anchors Stage 2 (Whitemane heroic: Surge of Power ~41s later)
-		if self:IsHeroic() and not phase2BarrageSeen then
+		if self:IsDifficulty("heroic10") and not phase2BarrageSeen then
 			phase2BarrageSeen = true
 			timerVortexCD:Cancel()
 			warnVortexSoon:Cancel()
@@ -228,7 +228,7 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg,sourceName)
 	if msg == L.EmoteSpark or msg:find(L.EmoteSpark) then
 		self:SendSync("Spark")
-	elseif msg == L.EmoteSurge or msg:find(L.EmoteSurge) or msg == L.EmoteSurge:gsub("%%s", sourceName) then -- emote isn't working quite right on Whitemane PTR, using another method
+	elseif msg == L.EmoteSurge or msg:find(L.EmoteSurge) or msg == L.EmoteSurge:gsub("%%s", sourceName or "") then -- emote isn't working quite right on Whitemane PTR, using another method
 		self:SendSync("MalygosSurge", UnitName("player"), syncSpam)
 		syncSpam = syncSpam % 2 + 1 -- dummy alternating arg to bypass DBM's 8-second sync antispam (hardcoded in :SendSync()). needed as Surge happens more often than that on Whitemane PTR
 	end

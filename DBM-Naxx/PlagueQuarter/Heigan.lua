@@ -21,6 +21,7 @@ local timerDecrepitFever		= mod:NewTimer(20, "TimerDecrepitFever", "Interface\\I
 mod.vb.feverCount = 0
 
 function mod:DancePhase()
+	timerDecrepitFever:Stop()
 	timerPlagueCloud:Start()
 	warnTeleportSoon:Schedule(35, 10)
 	warnPlagueCloudEnd:Schedule(45)

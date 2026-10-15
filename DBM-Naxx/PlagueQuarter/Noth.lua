@@ -87,7 +87,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(9250590, 9250591) then -- Curse of the Plaguebringer (heroic 10/25, 25s apart, 3-4 per ground phase)
+	if args:IsSpellID(9250590, 9250591) and self:IsInCombat() then -- Curse of the Plaguebringer (heroic 10/25, 25s apart, 3-4 per ground phase)
 		warnCurse:Show()
 		timerCurseCD:Start()
 	elseif args:IsSpellID(29213, 54835) then -- Curse of the Plaguebringer

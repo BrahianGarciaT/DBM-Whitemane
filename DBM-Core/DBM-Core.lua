@@ -884,7 +884,8 @@ do
 				DBM:Debug("DBM RegisterEvents Warning: "..spellId.." is not a number!")
 				return
 			end
-			if spellId and not DBM:GetSpellInfo(spellId) then
+			-- Custom Whitemane spell ids (>= 9000000) may be unknown to the client spell DB; never drop them
+			if spellId and spellId < 9000000 and not DBM:GetSpellInfo(spellId) then
 				DBM:Debug("DBM RegisterEvents Warning: "..spellId.." spell id does not exist!")
 				return
 			end
@@ -896,7 +897,8 @@ do
 
 		function unregisterSpellId(event, spellId)
 			if not registeredSpellIds[event] then return end
-			if spellId and not DBM:GetSpellInfo(spellId) then
+			-- Custom Whitemane spell ids (>= 9000000) are exempt from the spell DB check
+			if spellId and spellId < 9000000 and not DBM:GetSpellInfo(spellId) then
 				DBM:Debug("DBM unregisterSpellId Warning: "..spellId.." spell id does not exist!")
 				return
 			end
