@@ -62,7 +62,13 @@ end
 
 function mod:OnCombatStart(delay)
 	table.wipe(wrapIcons)
-	if self:IsHeroic() then -- Whitemane heroic (custom spell ids 9250xxx)
+	if self:IsDifficulty("heroic25") then -- Whitemane heroic 25 (3 logs): everything starts 1s earlier than on heroic 10
+		timerNecroticPoison:Start(4 - delay)
+		timerPoisonShock:Start(9 - delay)
+		timerWebWrap:Start(19 - delay)
+		warnWebSpraySoon:Schedule(34 - delay)
+		timerWebSpray:Start(39 - delay)
+	elseif self:IsHeroic() then -- Whitemane heroic (custom spell ids 9250xxx)
 		timerNecroticPoison:Start(5 - delay)
 		timerPoisonShock:Start(10 - delay)
 		timerWebWrap:Start(20 - delay)

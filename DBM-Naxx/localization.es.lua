@@ -30,11 +30,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningEmbraceExpire	= "Abrazo de la viuda expirando en 5 s"
+	WarningEmbraceExpire	= "Abrazo de la viuda expirando en 5 s",
+	SpecWarnVengefulBlight	= "Plaga vengativa - ¡interrumpe al Adorador resucitado!"
 })
 
 L:SetOptionLocalization({
-	WarningEmbraceExpire	= "Mostrar aviso previo para cuando expire Abrazo de la viuda"
+	WarningEmbraceExpire	= "Mostrar aviso previo para cuando expire Abrazo de la viuda",
+	SpecWarnVengefulBlight	= "Mostrar aviso especial para interrumpir Plaga vengativa (heroico 25)"
 })
 
 L:SetMiscLocalization({

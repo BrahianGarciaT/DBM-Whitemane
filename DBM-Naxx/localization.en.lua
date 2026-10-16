@@ -29,11 +29,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningEmbraceExpire	= "Widow's Embrace ends in 5 seconds"
+	WarningEmbraceExpire	= "Widow's Embrace ends in 5 seconds",
+	SpecWarnVengefulBlight	= "Vengeful Blight - interrupt the Risen Worshipper!"
 })
 
 L:SetOptionLocalization({
-	WarningEmbraceExpire	= "Show pre-warning for $spell:28732 fade"
+	WarningEmbraceExpire	= "Show pre-warning for $spell:28732 fade",
+	SpecWarnVengefulBlight	= "Show special warning to interrupt Vengeful Blight (heroic 25)"
 })
 
 L:SetMiscLocalization({

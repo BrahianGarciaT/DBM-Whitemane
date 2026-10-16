@@ -8,7 +8,7 @@ mod:RegisterCombat("combat_yell", L.Pull)
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 28798 54100 28732 54097 28794 54099 9250586 9250587",
-	"SPELL_CAST_SUCCESS 28796 54098 9250584 9250585 9250586 9250587",
+	"SPELL_CAST_SUCCESS 28796 54098 9250584 9250585 9250586 9250587 9250687",
 	"UNIT_DIED"
 )
 
@@ -20,6 +20,7 @@ local warnEnrageNow			= mod:NewSpellAnnounce(28131, 4)
 
 local specWarnEnrage		= mod:NewSpecialWarningDefensive(28131, nil, nil, nil, 3, 2)
 local specWarnGTFO			= mod:NewSpecialWarningGTFO(28794, nil, nil, nil, 1, 8)
+local specWarnVengefulBlight	= mod:NewSpecialWarning("SpecWarnVengefulBlight", nil, nil, nil, 1, 2) -- Whitemane heroic 25 (custom spell id 9250687, no spell info on the client)
 
 local timerEmbrace			= mod:NewBuffActiveTimer(30, 28732, nil, nil, nil, 6)
 local timerEnrage			= mod:NewCDTimer(60, 28131, nil, nil, nil, 6)
@@ -85,6 +86,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerPoisonVolleyCD:Start()
 	elseif args:IsSpellID(9250586, 9250587) then -- Rain of Fire (heroic 10/25)
 		timerRainOfFireCD:Start()
+	elseif args.spellId == 9250687 then -- Vengeful Blight (heroic 25): raid-wide channel of the Risen Worshipper (raised when a Worshipper dies), recast every ~4s until interrupted
+		if self:AntiSpam(3, 3) and self:CheckInterruptFilter(args.sourceGUID, false, true, true) then
+			specWarnVengefulBlight:Show()
+			specWarnVengefulBlight:Play("kickcast")
+		end
 	end
 end
 
